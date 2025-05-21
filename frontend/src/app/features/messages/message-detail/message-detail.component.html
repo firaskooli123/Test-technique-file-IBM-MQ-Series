@@ -1,0 +1,31 @@
+<h2 mat-dialog-title>{{ data.message ? 'Modifier le message' : 'Nouveau message' }}</h2>
+    <form [formGroup]="messageForm" (ngSubmit)="onSubmit()">
+      <mat-dialog-content>
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Contenu</mat-label>
+          <textarea matInput formControlName="content" rows="4"></textarea>
+          <mat-error *ngIf="messageForm.get('content')?.hasError('required')">
+            Le contenu est requis
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Partenaire</mat-label>
+          <mat-select formControlName="partner_id" required>
+            <mat-option *ngFor="let partner of partners" [value]="partner.id">
+              {{ partner.alias }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="messageForm.get('partner_id')?.hasError('required')">
+            Le partenaire est requis
+          </mat-error>
+        </mat-form-field>
+      </mat-dialog-content>
+
+      <mat-dialog-actions align="end">
+        <button mat-button type="button" (click)="onCancel()">Annuler</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="messageForm.invalid">
+          {{ data.message ? 'Mettre à jour' : 'Créer' }}
+        </button>
+      </mat-dialog-actions>
+    </form>

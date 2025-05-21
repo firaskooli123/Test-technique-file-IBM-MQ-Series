@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    container_name: ibm-mq-backend
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+      - ./logs:/usr/src/app/logs
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - JWT_SECRET=your_jwt_secret_here
+      - JWT_EXPIRES_IN=24h
+      - MQ_HOST=host.docker.internal
+      - MQ_PORT=1414
+      - MQ_CHANNEL=DEV.ADMIN.SVRCONN
+      - MQ_QUEUE_MANAGER=QM1
+      - MQ_QUEUE_NAME=DEV.QUEUE.1
+    restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge 

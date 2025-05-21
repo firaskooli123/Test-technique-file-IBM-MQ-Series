@@ -1,0 +1,147 @@
+<div class="partner-list-container">
+  <div class="header">
+    <h1>Liste des Partenaires</h1>
+    <button mat-raised-button color="primary" (click)="openPartnerDialog()">
+      <mat-icon>add</mat-icon>
+      Nouveau Partenaire
+    </button>
+  </div>
+
+  <!-- Filtres -->
+  <form [formGroup]="filterForm" class="filters">
+    <mat-form-field>
+      <mat-label>Alias</mat-label>
+      <input matInput formControlName="alias" placeholder="Rechercher par alias">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Type</mat-label>
+      <input matInput formControlName="type" placeholder="Filtrer par type">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Direction</mat-label>
+      <mat-select formControlName="direction">
+        <mat-option value="">Tous</mat-option>
+        <mat-option value="INBOUND">INBOUND</mat-option>
+        <mat-option value="OUTBOUND">OUTBOUND</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Type de flux</mat-label>
+      <mat-select formControlName="processed_flow_type">
+        <mat-option value="">Tous</mat-option>
+        <mat-option value="MESSAGE">MESSAGE</mat-option>
+        <mat-option value="ALERTING">ALERTING</mat-option>
+        <mat-option value="NOTIFICATION">NOTIFICATION</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+
+  <!-- Tableau -->
+  <div class="table-container mat-elevation-z8">
+    <table mat-table [dataSource]="partners" class="mat-elevation-z8">
+      <!-- Alias -->
+      <ng-container matColumnDef="alias">
+        <th mat-header-cell *matHeaderCellDef (click)="onSort('alias')">
+          Alias
+          <mat-icon *ngIf="sortBy === 'alias'">
+            {{sortOrder === 'ASC' ? 'arrow_upward' : 'arrow_downward'}}
+          </mat-icon>
+        </th>
+        <td mat-cell *matCellDef="let partner">{{partner.alias}}</td>
+      </ng-container>
+
+      <!-- Type -->
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef (click)="onSort('type')">
+          Type
+          <mat-icon *ngIf="sortBy === 'type'">
+            {{sortOrder === 'ASC' ? 'arrow_upward' : 'arrow_downward'}}
+          </mat-icon>
+        </th>
+        <td mat-cell *matCellDef="let partner">{{partner.type}}</td>
+      </ng-container>
+
+      <!-- Direction -->
+      <ng-container matColumnDef="direction">
+        <th mat-header-cell *matHeaderCellDef (click)="onSort('direction')">
+          Direction
+          <mat-icon *ngIf="sortBy === 'direction'">
+            {{sortOrder === 'ASC' ? 'arrow_upward' : 'arrow_downward'}}
+          </mat-icon>
+        </th>
+        <td mat-cell *matCellDef="let partner">{{partner.direction}}</td>
+      </ng-container>
+
+      <!-- Application -->
+      <ng-container matColumnDef="application">
+        <th mat-header-cell *matHeaderCellDef (click)="onSort('application')">
+          Application
+          <mat-icon *ngIf="sortBy === 'application'">
+            {{sortOrder === 'ASC' ? 'arrow_upward' : 'arrow_downward'}}
+          </mat-icon>
+        </th>
+        <td mat-cell *matCellDef="let partner">{{partner.application}}</td>
+      </ng-container>
+
+      <!-- Type de flux -->
+      <ng-container matColumnDef="processed_flow_type">
+        <th mat-header-cell *matHeaderCellDef (click)="onSort('processed_flow_type')">
+          Type de flux
+          <mat-icon *ngIf="sortBy === 'processed_flow_type'">
+            {{sortOrder === 'ASC' ? 'arrow_upward' : 'arrow_downward'}}
+          </mat-icon>
+        </th>
+        <td mat-cell *matCellDef="let partner">{{partner.processed_flow_type}}</td>
+      </ng-container>
+
+      <!-- Actions -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let partner">
+          <button mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="openPartnerDialog(partner)">
+              <mat-icon>edit</mat-icon>
+              <span>Modifier</span>
+            </button>
+            <button mat-menu-item (click)="deletePartner(partner)">
+              <mat-icon>delete</mat-icon>
+              <span>Supprimer</span>
+            </button>
+          </mat-menu>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <div *ngIf="partners.length === 0 && !loading" class="empty-message">
+      Aucun partenaire trouvé.
+    </div>
+
+    <!-- Loading spinner -->
+    <div *ngIf="loading" class="loading-spinner">
+      <mat-spinner diameter="50"></mat-spinner>
+    </div>
+
+    <!-- Error message -->
+    <div *ngIf="error" class="error-message">
+      {{error}}
+    </div>
+
+    <!-- Pagination -->
+    <mat-paginator
+      [length]="pagination.total"
+      [pageSize]="pagination.limit"
+      [pageIndex]="pagination.currentPage - 1"
+      (page)="onPageChange($event.pageIndex + 1)"
+      showFirstLastButtons>
+    </mat-paginator>
+  </div>
+</div> 

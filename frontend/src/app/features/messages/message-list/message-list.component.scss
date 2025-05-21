@@ -1,0 +1,90 @@
+.message-list-container {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  height: 100%;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.filters-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+.search-field {
+  width: 300px;
+}
+.partner-field {
+  width: 220px;
+}
+.table-container {
+  position: relative;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+table {
+  width: 100%;
+}
+.mat-mdc-header-cell {
+  background-color: #f5f5f5;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.87);
+}
+.mat-mdc-row {
+  &:hover {
+    background-color: #f5f5f5;
+  }
+}
+.content-cell {
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.empty-message {
+  text-align: center;
+  color: #888;
+  font-size: 1.1em;
+  padding: 32px 0;
+}
+.loading-shade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.7);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.error-message {
+  padding: 16px;
+  color: #f44336;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #ffebee;
+  border-radius: 4px;
+  margin: 16px;
+}
+.text-warn {
+  color: #f44336;
+}
+mat-paginator {
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+}
+::ng-deep {
+  .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+  }
+} 

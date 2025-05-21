@@ -1,0 +1,90 @@
+<h2 mat-dialog-title>{{data ? 'Modifier' : 'Ajouter'}} un partenaire</h2>
+<form [formGroup]="partnerForm" (ngSubmit)="onSubmit()">
+  <mat-dialog-content>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Nom</mat-label>
+      <input matInput formControlName="name" required>
+      <mat-error *ngIf="partnerForm.get('name')?.hasError('required')">
+        Le nom est requis
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Code</mat-label>
+      <input matInput formControlName="code" required>
+      <mat-error *ngIf="partnerForm.get('code')?.hasError('required')">
+        Le code est requis
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Alias</mat-label>
+      <input matInput formControlName="alias" required>
+      <mat-error *ngIf="partnerForm.get('alias')?.hasError('required')">
+        L'alias est requis
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Type</mat-label>
+      <input matInput formControlName="type" required>
+      <mat-error *ngIf="partnerForm.get('type')?.hasError('required')">
+        Le type est requis
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Direction</mat-label>
+      <mat-select formControlName="direction" required>
+        <mat-option value="INBOUND">Entrant</mat-option>
+        <mat-option value="OUTBOUND">Sortant</mat-option>
+      </mat-select>
+      <mat-error *ngIf="partnerForm.get('direction')?.hasError('required')">
+        La direction est requise
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Application</mat-label>
+      <input matInput formControlName="application">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Type de flux</mat-label>
+      <mat-select formControlName="processed_flow_type" required>
+        <mat-option value="MESSAGE">Message</mat-option>
+        <mat-option value="ALERTING">Alerte</mat-option>
+        <mat-option value="NOTIFICATION">Notification</mat-option>
+      </mat-select>
+      <mat-error *ngIf="partnerForm.get('processed_flow_type')?.hasError('required')">
+        Le type de flux est requis
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description" required rows="4"></textarea>
+      <mat-error *ngIf="partnerForm.get('description')?.hasError('required')">
+        La description est requise
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Statut</mat-label>
+      <mat-select formControlName="status" required>
+        <mat-option value="active">Actif</mat-option>
+        <mat-option value="inactive">Inactif</mat-option>
+      </mat-select>
+      <mat-error *ngIf="partnerForm.get('status')?.hasError('required')">
+        Le statut est requis
+      </mat-error>
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="onCancel()">Annuler</button>
+    <button mat-raised-button color="primary" type="submit" [disabled]="partnerForm.invalid">
+      {{data ? 'Modifier' : 'Ajouter'}}
+    </button>
+  </mat-dialog-actions>
+</form>

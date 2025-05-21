@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=mqmanager
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - MQ_HOST=ibmmq
+      - MQ_PORT=1414
+      - MQ_CHANNEL=DEV.ADMIN.SVRCONN
+      - MQ_QUEUE_MANAGER=QM1
+    depends_on:
+      - postgres
+      - ibmmq
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "4200:4200"
+    depends_on:
+      - backend
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=mqmanager
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  ibmmq:
+    image: ibmcom/mq:latest
+    ports:
+      - "1414:1414"
+      - "9443:9443"
+    environment:
+      - LICENSE=accept
+      - MQ_DEV=true
+      - MQ_ADMIN_PASSWORD=passw0rd
+    volumes:
+      - mq_data:/var/mqm
+
+volumes:
+  postgres_data:
+  mq_data: 
